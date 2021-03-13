@@ -1,0 +1,58 @@
+#we keep a properties file so that the config of app
+# can be changed externally without always doing it programmatically
+spring: # default config
+  profiles:
+    active:
+#      - prod // merge of profiles will take place
+      - dev
+  # to run on commandline --spring.profiles.active=prod,dev
+  jpa:
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  # spring data paging properties
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 100
+
+
+---
+#spring properties
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:h2:./hoaxify-prod
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enable: false
+# hoaxify properties to be used for configuration ()
+hoaxify:
+  upload-path: upload-prod
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:h2:./hoaxify-dev
+# hoaxify properties to be used for configuration ()
+hoaxify:
+  upload-path: upload-dev
+
+---
+spring:
+  profiles: test
+# hoaxify properties to be used for configuration ()
+hoaxify:
+  upload-path: upload-test
+
